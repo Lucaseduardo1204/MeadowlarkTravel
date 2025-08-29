@@ -2,8 +2,6 @@ const express = require("express");
 const { engine } = require("express-handlebars");
 const handlers = require("./lib/handlers");
 
-const fortune = require("./lib/fortune");
-
 const app = express();
 
 // Cria o view engine e configura o Express
@@ -28,3 +26,17 @@ app.use(handlers.notFound);
 
 //Pagina 500 personalizada
 app.use(handlers.serverError);
+
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(
+      `Express started on http://localhost:${port}` +
+        " ; press Ctrl-C to terminate."
+    );
+  });
+} else {
+  module.exports = app;
+}
+// O importante de saber e se voce executar um arquivo JavaScript
+// diretamente com o node, require.main sera igual ao objeto global
+// module; caso contrario, o arquivo sera importado de outro modulo.
